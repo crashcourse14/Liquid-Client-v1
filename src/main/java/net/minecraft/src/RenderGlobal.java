@@ -145,6 +145,11 @@ public class RenderGlobal implements IWorldAccess {
 	int frustumCheckOffset = 0;
 
 	private int occlusionForcedIndexShift = 0;
+
+	/** Adaptive limiter for chunk updates to avoid frame spikes (ms moving avg) */
+	private int adaptiveChunkUpdateLimit = 2;
+	private double avgUpdateMillis = 0.0D;
+	private long lastUpdateMillis = 0L;
 	
 	public RenderGlobal(Minecraft par1Minecraft, RenderEngine par2RenderEngine) {
 		this.mc = par1Minecraft;
@@ -327,7 +332,8 @@ public class RenderGlobal implements IWorldAccess {
 						this.worldRenderers[i].chunkIndex = var3++;
 						this.worldRenderers[i].markDirty();
 						this.sortedWorldRenderers[i] = this.worldRenderers[i];
-						this.worldRenderersToUpdate.add(this.worldRenderers[i]);
+						this.worldRenderers[i].queuedForUpdate = true;
+					this.worldRenderersToUpdate.add(this.worldRenderers[i]);
 						var2 += 2;
 					}
 				}
@@ -498,7 +504,8 @@ public class RenderGlobal implements IWorldAccess {
 					var14.setPosition(var7, var13, var10);
 
 					if (!var15 && var14.needsUpdate) {
-						this.worldRenderersToUpdate.add(var14);
+						var14.queuedForUpdate = true;
+				this.worldRenderersToUpdate.add(var14);
 					}
 				}
 			}
@@ -522,7 +529,8 @@ public class RenderGlobal implements IWorldAccess {
 			this.worldRenderersCheckIndex = (this.worldRenderersCheckIndex + 1) % this.worldRenderers.length;
 			WorldRenderer var6 = this.worldRenderers[this.worldRenderersCheckIndex];
 
-			if (var6.needsUpdate && !this.worldRenderersToUpdate.contains(var6)) {
+			if (var6.needsUpdate && !var6.queuedForUpdate) {
+				var6.queuedForUpdate = true;
 				this.worldRenderersToUpdate.add(var6);
 			}
 		}
@@ -1295,8 +1303,11 @@ public class RenderGlobal implements IWorldAccess {
 		this.theWorld.theProfiler.endSection();
 		this.theWorld.theProfiler.startSection("sortAndUpdate");
 
+		long startMs = System.currentTimeMillis();
 		int updates = 0;
 		int dropped = 0;
+		int userLimit = Math.max(1, mc.gameSettings.chunkUpdatePerFrame + 1);
+		int allowedPerFrame = Math.min(userLimit, adaptiveChunkUpdateLimit);
 		if (var6 != null) {
 			if (var6.size() > 1) {
 				Collections.sort(var6, var4);
@@ -1304,19 +1315,30 @@ public class RenderGlobal implements IWorldAccess {
 
 			for (var9 = var6.size() - 1; var9 >= 0; --var9) {
 				var10 = (WorldRenderer) var6.get(var9);
-				if(updates >= mc.gameSettings.chunkUpdatePerFrame + 1) { // make configurable
+				if (updates >= allowedPerFrame) { // adaptive throttle
+					var10.queuedForUpdate = true;
 					this.worldRenderersToUpdate.add(var10);
 					++dropped;
-				}else {
+				} else {
 					++mc.chunkUpdates;
 					var10.updateRenderer();
 					var10.needsUpdate = false;
+					var10.queuedForUpdate = false;
 					if(!var10.skipAllRenderPasses()) {
 						++updates;
 						++mc.chunkGeometryUpdates;
 					}
 				}
 			}
+		}
+
+		// update adaptive limiter based on how long updates took
+		long elapsed = System.currentTimeMillis() - startMs;
+		this.avgUpdateMillis = this.avgUpdateMillis * 0.85D + elapsed * 0.15D;
+		if (this.avgUpdateMillis > 30.0D && this.adaptiveChunkUpdateLimit > 1) {
+			this.adaptiveChunkUpdateLimit = Math.max(1, this.adaptiveChunkUpdateLimit - 1);
+		} else if (this.avgUpdateMillis < 10.0D && this.adaptiveChunkUpdateLimit < 8) {
+			++this.adaptiveChunkUpdateLimit;
 		}
 
 		this.theWorld.theProfiler.endSection();
@@ -1498,6 +1520,7 @@ public class RenderGlobal implements IWorldAccess {
 					if (var20 != null && !var20.needsUpdate) {
 						this.worldRenderersToUpdate.add(var20);
 						var20.markDirty();
+					var20.queuedForUpdate = true;
 					}
 				}
 			}

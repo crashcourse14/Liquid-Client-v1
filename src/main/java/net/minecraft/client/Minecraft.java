@@ -5,6 +5,8 @@ import java.text.DecimalFormat;
 import java.util.HashSet;
 import java.util.List;
 
+import net.polarclient.Client;
+
 import net.lax1dude.eaglercraft.DefaultSkinRenderer;
 import net.lax1dude.eaglercraft.EaglerAdapter;
 import net.lax1dude.eaglercraft.EaglerProfile;
@@ -319,6 +321,7 @@ public class Minecraft implements Runnable {
 		this.checkGLError("Post startup");
 		this.guiAchievement = new GuiAchievement(this);
 		this.ingameGUI = new GuiIngame(this);
+		Client.INSTANCE.startup();
 		this.voiceOverlay = new GuiVoiceOverlay(this);
 
 		ScaledResolution var2 = new ScaledResolution(this.gameSettings, this.displayWidth, this.displayHeight);
@@ -634,6 +637,7 @@ public class Minecraft implements Runnable {
 	public void shutdownMinecraftApplet() {
 		try {
 
+			Client.INSTANCE.shutdown();
 			System.err.println("Stopping!");
 
 			try {

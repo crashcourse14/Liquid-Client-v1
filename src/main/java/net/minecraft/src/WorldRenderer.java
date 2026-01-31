@@ -79,6 +79,13 @@ public class WorldRenderer {
 	public List tileEntityRenderers = new ArrayList();
 	private List tileEntities;
 
+	/** Reusable sets to avoid allocations during updates */
+	private final java.util.HashSet prevTileEntitySet = new java.util.HashSet();
+	private final java.util.HashSet newTileEntitySet = new java.util.HashSet();
+
+	/** Flag to indicate this renderer is queued for update (avoids contains checks) */
+	public boolean queuedForUpdate = false;
+
 	/** Bytes sent to the GPU */
 	private int bytesDrawn;
 
@@ -147,8 +154,8 @@ public class WorldRenderer {
 			}
 
 			Chunk.isLit = false;
-			HashSet var21 = new HashSet();
-			var21.addAll(this.tileEntityRenderers);
+		this.prevTileEntitySet.clear();
+		this.prevTileEntitySet.addAll(this.tileEntityRenderers);
 			this.tileEntityRenderers.clear();
 			byte var8 = 1;
 			ChunkCache var9 = new ChunkCache(this.worldObj, var1 - var8, var2 - var8, var3 - var8, var4 + var8, var5 + var8, var6 + var8, var8);
@@ -235,12 +242,12 @@ public class WorldRenderer {
 				EaglerAdapter.hintAnisotropicFix(false);
 			}
 
-			HashSet var22 = new HashSet();
-			var22.addAll(this.tileEntityRenderers);
-			var22.removeAll(var21);
-			this.tileEntities.addAll(var22);
-			var21.removeAll(this.tileEntityRenderers);
-			this.tileEntities.removeAll(var21);
+		this.newTileEntitySet.clear();
+		this.newTileEntitySet.addAll(this.tileEntityRenderers);
+		this.newTileEntitySet.removeAll(this.prevTileEntitySet);
+		this.tileEntities.addAll(this.newTileEntitySet);
+		this.prevTileEntitySet.removeAll(this.tileEntityRenderers);
+		this.tileEntities.removeAll(this.prevTileEntitySet);
 			this.isChunkLit = Chunk.isLit;
 			this.isInitialized = true;
 
@@ -276,11 +283,15 @@ public class WorldRenderer {
 
 		this.isInFrustum = false;
 		this.isInitialized = false;
+		this.queuedForUpdate = false;
 	}
 
 	public void stopRendering() {
 		this.setDontDraw();
 		this.worldObj = null;
+		this.tileEntities.clear();
+		this.tileEntityRenderers.clear();
+		this.queuedForUpdate = false;
 	}
 
 	/**
