@@ -4,6 +4,10 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 
+import net.polarclient.Client;
+import net.polarclient.gui.mod.HudManager;
+import net.polarclient.gui.mod.HudMod;
+
 import net.lax1dude.eaglercraft.EaglerAdapter;
 import net.lax1dude.eaglercraft.EaglercraftRandom;
 import net.lax1dude.eaglercraft.EnumBrowser;
@@ -553,6 +557,8 @@ public class GuiIngame extends Gui {
 		this.mc.mcProfiler.endSection();
 		EaglerAdapter.glPopMatrix();
 		var42 = this.mc.theWorld.getScoreboard().func_96539_a(0);
+
+		Client.INSTANCE.hudManager.renderMods();
 
 		if (this.mc.gameSettings.keyBindPlayerList.pressed && (!this.mc.isIntegratedServerRunning() || this.mc.thePlayer.sendQueue.playerInfoList.size() > 1 || var42 != null)) {
 			this.mc.mcProfiler.startSection("playerList");

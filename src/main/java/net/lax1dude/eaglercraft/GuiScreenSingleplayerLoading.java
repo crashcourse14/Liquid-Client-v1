@@ -7,7 +7,6 @@ import net.lax1dude.eaglercraft.sp.ipc.IPCPacket15ThrowException;
 import net.minecraft.client.Minecraft;
 import net.minecraft.src.GuiButton;
 import net.minecraft.src.GuiMainMenu;
-import net.polarclient.gui.MainMenu;
 import net.minecraft.src.GuiScreen;
 import net.minecraft.src.StringTranslate;
 
@@ -27,7 +26,7 @@ public class GuiScreenSingleplayerLoading extends GuiScreen {
 	
 	private static final Runnable defaultTerminateAction = () -> {
 		IntegratedServer.killWorker();
-		Minecraft.getMinecraft().displayGuiScreen(new  MainMenu());
+		Minecraft.getMinecraft().displayGuiScreen(new  GuiMainMenu());
 	};
 	
 	public static GuiScreen createException(GuiScreen ok, String msg, IPCPacket15ThrowException[] exceptions) {

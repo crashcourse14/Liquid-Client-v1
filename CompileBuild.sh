@@ -5,11 +5,6 @@ export PATH=$JAVA_HOME/bin:$PATH
 chmod +x ./gradlew
 ./gradlew clean teavm
 
-cd epkcompiler
-chmod +x ./run_unix.sh
-
-cd ..
-
 chmod +x ./CompileEPK.sh
 ./CompileEPK.sh
 

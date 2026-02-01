@@ -9,7 +9,6 @@ import net.lax1dude.eaglercraft.GuiVoiceMenu;
 import net.lax1dude.eaglercraft.IntegratedServer;
 import net.lax1dude.eaglercraft.IntegratedServerLAN;
 import net.minecraft.client.Minecraft;
-import net.polarclient.gui.MainMenu;
 
 
 public class GuiIngameMenu extends GuiScreen {
@@ -55,7 +54,7 @@ public class GuiIngameMenu extends GuiScreen {
 			par1GuiButton.enabled = false;
 			this.mc.theWorld.sendQuittingDisconnectingPacket();
 			this.mc.loadWorld((WorldClient) null);
-			this.mc.stopServerAndDisplayGuiScreen(new MainMenu());
+			this.mc.stopServerAndDisplayGuiScreen(new GuiMainMenu());
 
 		case 2:
 		case 3:

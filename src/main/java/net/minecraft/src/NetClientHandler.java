@@ -1,6 +1,5 @@
 package net.minecraft.src;
 
-import net.polarclient.gui.MainMenu;
 
 
 import java.io.ByteArrayInputStream;
@@ -102,9 +101,9 @@ public class NetClientHandler extends NetHandler {
 	
 	private GuiScreen backToMenu() {
 		if(netManager instanceof WorkerNetworkManager) {
-			return new MainMenu();
+			return new GuiMainMenu();
 		}else {
-			return new GuiMultiplayer(new MainMenu());
+			return new GuiMultiplayer(new GuiMainMenu());
 		}
 	}
 
