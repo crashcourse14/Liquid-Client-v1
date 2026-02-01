@@ -1,12 +1,11 @@
 package net.polarclient;
 
-import net.polarclient.event.EventManager;
-import net.polarclient.event.EventTarget;
-import net.polarclient.event.Event;
+import net.polarclient.event.*;
 import net.minecraft.client.Minecraft;
 import net.polarclient.event.events.ClientTick;
-import net.polarclient.gui.mod.HudManager;
-import net.polarclient.gui.mod.HudMod;
+import net.polarclient.gui.mod.*;
+import net.minecraft.src.Potion;
+import net.minecraft.src.PotionEffect;
 
 public class Client {
     public static final String CLIENT_VERSION = "PolarClient 1.5.2 R9";
@@ -37,5 +36,12 @@ public class Client {
     @EventTarget
     public void onTick(ClientTick event) {
 
+        if (Client.INSTANCE.hudManager.fullBrightMod.isEnabled() && mc.theWorld != null) {
+            mc.thePlayer.addPotionEffect(new PotionEffect(Potion.nightVision.id, 5201, 0)); // Night Vision
+            mc.gameSettings.gammaSetting = 420;
+        } else if (!Client.INSTANCE.hudManager.fullBrightMod.isEnabled() && mc.theWorld != null) {
+            mc.thePlayer.removePotionEffect(Potion.nightVision.id);
+            mc.gameSettings.gammaSetting = 1;
+        }
     }
 }

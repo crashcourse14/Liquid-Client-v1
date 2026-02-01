@@ -6,6 +6,7 @@ import java.util.HashSet;
 import java.util.List;
 
 import net.polarclient.Client;
+import net.polarclient.event.events.ClientTick;
 
 import net.lax1dude.eaglercraft.DefaultSkinRenderer;
 import net.lax1dude.eaglercraft.EaglerAdapter;
@@ -809,6 +810,9 @@ public class Minecraft implements Runnable {
 		}
 		
 		EaglerAdapter.doJavascriptCoroutines();
+
+		ClientTick event = new ClientTick();
+		event.call();
 
 		this.mcProfiler.endSection();
 		this.mcProfiler.endSection();

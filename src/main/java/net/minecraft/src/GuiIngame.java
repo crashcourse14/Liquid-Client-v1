@@ -18,7 +18,7 @@ import net.lax1dude.eaglercraft.glemu.EffectPipeline;
 import net.minecraft.client.Minecraft;
 
 public class GuiIngame extends Gui {
-	private static RenderItem itemRenderer = null;
+	public static RenderItem itemRenderer = null;
 	private final EaglercraftRandom rand = new EaglercraftRandom();
 	private final Minecraft mc;
 

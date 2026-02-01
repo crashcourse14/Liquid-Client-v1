@@ -1,5 +1,6 @@
 package net.polarclient.gui.mod;
 
+import java.sql.Date;
 import java.util.ArrayList;
 
 import net.polarclient.gui.mod.mods.*;
@@ -12,12 +13,23 @@ public class HudManager {
     public CoordinatesMod coordinatesMod;
     public FpsMod fpsMod;
     public Ping pingMod;
+    public FullBrightMod fullBrightMod;
+    public ClockMod clockMod;
+    public DateMod dateMod;
+    public ToggleSprintMod toggleSprintMod;
+    public EntityMod entityMod;
 
     public HudManager() {
         hudMods.add(clientName = new ClientName());
         hudMods.add(coordinatesMod = new CoordinatesMod());
         hudMods.add(fpsMod = new FpsMod());
         hudMods.add(pingMod = new Ping());
+        hudMods.add(fullBrightMod = new FullBrightMod());
+        hudMods.add(clockMod = new ClockMod());
+        hudMods.add(dateMod = new DateMod());
+        hudMods.add(toggleSprintMod = new ToggleSprintMod());
+        hudMods.add(entityMod = new EntityMod());
+
 
     }
 

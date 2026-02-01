@@ -429,6 +429,10 @@ public class RenderGlobal implements IWorldAccess {
 		return "E: " + this.countEntitiesRendered + "/" + this.countEntitiesTotal + ". B: " + this.countEntitiesHidden + ", I: " + (this.countEntitiesTotal - this.countEntitiesHidden - this.countEntitiesRendered);
 	}
 
+	public String getDebugInfoEntitiesShort() {
+		return this.countEntitiesRendered + "/" + this.countEntitiesTotal;
+	}
+
 	/**
 	 * Goes through all the renderers setting new positions on them and those that
 	 * have their position changed are adding to be updated

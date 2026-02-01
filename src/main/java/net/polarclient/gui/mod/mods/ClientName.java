@@ -19,10 +19,13 @@ public class ClientName extends HudMod {
         super.draw();
     }
 
+    @Override
+    
     public int getWidth() {
         return fr.getStringWidth(name);
     }
 
+    @Override
     public int getHeight() {
         return fr.FONT_HEIGHT;
     }
