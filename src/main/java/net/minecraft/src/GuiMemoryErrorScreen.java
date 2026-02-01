@@ -1,5 +1,8 @@
 package net.minecraft.src;
 
+import net.polarclient.gui.MainMenu;
+
+
 public class GuiMemoryErrorScreen extends GuiScreen {
 	/**
 	 * Adds the buttons (and other controls) to the screen in question.
@@ -17,7 +20,7 @@ public class GuiMemoryErrorScreen extends GuiScreen {
 	 */
 	protected void actionPerformed(GuiButton par1GuiButton) {
 		if (par1GuiButton.id == 0) {
-			this.mc.displayGuiScreen(new GuiMainMenu());
+			this.mc.displayGuiScreen(new MainMenu());
 		} else if (par1GuiButton.id == 1) {
 			this.mc.shutdown();
 		}

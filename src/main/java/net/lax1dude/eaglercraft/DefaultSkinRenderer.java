@@ -50,7 +50,6 @@ public class DefaultSkinRenderer {
 			new TextureLocation("/skins/22.noob.png"),
 			new TextureLocation("/skins/23.trump.png"),
 			new TextureLocation("/skins/24.notch.png"),
-			new TextureLocation("/skins/25.creeper.png"),
 			new TextureLocation("/skins/26.zombie.png"),
 			new TextureLocation("/skins/27.pig.png"),
 			new TextureLocation("/skins/28.squid.png"),

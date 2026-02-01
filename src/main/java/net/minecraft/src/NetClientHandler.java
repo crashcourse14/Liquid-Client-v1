@@ -1,5 +1,8 @@
 package net.minecraft.src;
 
+import net.polarclient.gui.MainMenu;
+
+
 import java.io.ByteArrayInputStream;
 import java.io.DataInputStream;
 import java.io.IOException;
@@ -99,9 +102,9 @@ public class NetClientHandler extends NetHandler {
 	
 	private GuiScreen backToMenu() {
 		if(netManager instanceof WorkerNetworkManager) {
-			return new GuiMainMenu();
+			return new MainMenu();
 		}else {
-			return new GuiMultiplayer(new GuiMainMenu());
+			return new GuiMultiplayer(new MainMenu());
 		}
 	}
 

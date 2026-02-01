@@ -3,6 +3,7 @@ package net.minecraft.src;
 import java.util.Iterator;
 
 import net.lax1dude.eaglercraft.EaglerAdapter;
+import net.polarclient.gui.MainMenu;
 
 public class GuiGameOver extends GuiScreen {
 	/**
@@ -56,7 +57,7 @@ public class GuiGameOver extends GuiScreen {
 		case 2:
 			this.mc.theWorld.sendQuittingDisconnectingPacket();
 			this.mc.loadWorld((WorldClient) null);
-			this.mc.stopServerAndDisplayGuiScreen(new GuiMainMenu());
+			this.mc.stopServerAndDisplayGuiScreen(new MainMenu());
 		}
 	}
 

@@ -6,6 +6,7 @@ import java.util.HashSet;
 import java.util.List;
 
 import net.polarclient.Client;
+import net.polarclient.gui.MainMenu;
 
 import net.lax1dude.eaglercraft.DefaultSkinRenderer;
 import net.lax1dude.eaglercraft.EaglerAdapter;
@@ -340,9 +341,9 @@ public class Minecraft implements Runnable {
 		GuiScreen scr;
 		
 		if(s != null) {
-			scr = new GuiScreenEditProfile(new GuiConnecting(new GuiMainMenu(), this, new ServerData("Eaglercraft Server", s, false)));
+			scr = new GuiScreenEditProfile(new GuiConnecting(new MainMenu(), this, new ServerData("Eaglercraft Server", s, false)));
 		}else {
-			scr = new GuiScreenEditProfile(new GuiMainMenu());
+			scr = new GuiScreenEditProfile(new MainMenu());
 		}
 		
 		if(!LocalStorageManager.profileSettingsStorage.getBoolean("acceptLicense")) {
@@ -582,12 +583,12 @@ public class Minecraft implements Runnable {
 		}
 
 		if (par1GuiScreen == null && this.theWorld == null) {
-			par1GuiScreen = new GuiMainMenu();
+			par1GuiScreen = new MainMenu();
 		} else if (par1GuiScreen == null && this.thePlayer.getHealth() <= 0) {
 			par1GuiScreen = new GuiGameOver();
 		}
 
-		if (par1GuiScreen instanceof GuiMainMenu) {
+		if (par1GuiScreen instanceof MainMenu) {
 			this.gameSettings.showDebugInfo = false;
 			this.ingameGUI.getChatGUI().clearChatMessages();
 		}
@@ -815,7 +816,7 @@ public class Minecraft implements Runnable {
 	}
 
 	private int func_90020_K() {
-		return this.currentScreen != null && this.currentScreen instanceof GuiMainMenu ? 2 : this.gameSettings.limitFramerate;
+		return this.currentScreen != null && this.currentScreen instanceof MainMenu ? 2 : this.gameSettings.limitFramerate;
 	}
 
 	/**
@@ -1529,7 +1530,7 @@ public class Minecraft implements Runnable {
 				System.out.println("Redirecting to: " + reconnectAddress);
 				theWorld.sendQuittingDisconnectingPacket();
 				loadWorld((WorldClient) null);
-				stopServerAndDisplayGuiScreen(new GuiConnecting(new GuiMultiplayer(new GuiMainMenu()), this,
+				stopServerAndDisplayGuiScreen(new GuiConnecting(new GuiMultiplayer(new MainMenu()), this,
 						new ServerData("reconnect", reconnectAddress, true)));
 			}
 			reconnectAddress = null;
@@ -1907,6 +1908,6 @@ public class Minecraft implements Runnable {
 		
 		IntegratedServer.loadWorld(folderName, gameSettings.difficulty, var6);
 		
-		this.displayGuiScreen(new GuiScreenSingleplayerLoading(new GuiScreenSingleplayerConnecting(new GuiMainMenu(), "Connecting to " + folderName), "Loading world: " + folderName, () -> IntegratedServer.isWorldRunning()));
+		this.displayGuiScreen(new GuiScreenSingleplayerLoading(new GuiScreenSingleplayerConnecting(new MainMenu(), "Connecting to " + folderName), "Loading world: " + folderName, () -> IntegratedServer.isWorldRunning()));
 	}
 }
