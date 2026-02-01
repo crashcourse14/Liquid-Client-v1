@@ -149,10 +149,8 @@ public class GuiMainMenu extends GuiScreen {
 		if(EaglerAdapter.isIntegratedServerAvailable()) {
 			this.buttonList.add(new GuiButton(1, this.width / 2 - 100, var4, var2.translateKey("menu.singleplayer")));
 			this.buttonList.add(new GuiButton(2, this.width / 2 - 100, var4 + 24 * 1, var2.translateKey("menu.multiplayer")));
-			this.buttonList.add(new GuiButton(3, this.width / 2 - 100, var4 + 24 * 2, var2.translateKey("menu.forkme")));
 		}else {
-			this.buttonList.add(new GuiButton(2, this.width / 2 - 100, var4, var2.translateKey("menu.multiplayer")));
-			this.buttonList.add(new GuiButton(3, this.width / 2 - 100, var4 + 24, var2.translateKey("menu.forkme")));
+			this.buttonList.add(new GuiButton(2, this.width / 2 - 100, var4, var2.translateKey("menu.multiplayer")));;
 		}
 
 		this.buttonList.add(new GuiButton(0, this.width / 2 - 100, var4 + 72 + 12, 98, 20, var2.translateKey("menu.options")));

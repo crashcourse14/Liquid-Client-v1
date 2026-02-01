@@ -15,6 +15,7 @@ gui.killTask=Kill Task
 
 menu.singleplayer=Singleplayer
 menu.multiplayer=Multiplayer
+menu.modsmenu=Polar Settings
 menu.online=Minecraft Realms
 menu.options=Options...
 menu.editprofile=Edit Profile
