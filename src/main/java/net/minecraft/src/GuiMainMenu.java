@@ -5,6 +5,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
+
 import net.lax1dude.eaglercraft.AssetRepository;
 import net.lax1dude.eaglercraft.ConfigConstants;
 import net.lax1dude.eaglercraft.EaglerAdapter;
@@ -16,6 +17,10 @@ import net.lax1dude.eaglercraft.LocalStorageManager;
 import net.lax1dude.eaglercraft.TextureLocation;
 import net.lax1dude.eaglercraft.adapter.Tessellator;
 import net.minecraft.client.Minecraft;
+
+import net.liquidclient.gui.hud.buttons.*;
+import net.liquidclient.gui.hud.notifications.*;
+
 
 public class GuiMainMenu extends GuiScreen {
 
@@ -144,21 +149,31 @@ public class GuiMainMenu extends GuiScreen {
 
 		StringTranslate var2 = StringTranslate.getInstance();
 		int var4 = this.height / 4 + 48;
+		int BUTTON_WIDTH = 98;
+		int BUTTON_HEIGHT = 20; 
+		int SPACING = 24;      
+		int START_Y = this.height / 4 + 48;
+		int CENTER_X = (this.width - BUTTON_WIDTH) / 2;
 
-		int buttonWidth = 98;
-		int buttonHeight = 20; 
-		int spacing = 24;      
-		int startY = this.height / 4 + 48;
-		int centerX = (this.width - buttonWidth) / 2;
+		int ICON_SIZE = 20;
+		int PADDING_RIGHT = 5;
+		int PADDING_TOP = 5;
 
-		this.buttonList.add(new GuiButton(1, centerX, startY, buttonWidth, buttonHeight, var2.translateKey("menu.singleplayer")));
-		this.buttonList.add(new GuiButton(2, centerX, startY + spacing, buttonWidth, buttonHeight, var2.translateKey("menu.multiplayer")));
-		this.buttonList.add(new GuiButton(0, centerX, startY + spacing * 2, buttonWidth, buttonHeight, var2.translateKey("menu.options")));
-		this.buttonList.add(new GuiButton(4, centerX, startY + spacing * 3, buttonWidth, buttonHeight, var2.translateKey("menu.editprofile")));
+		int START_X = this.width - ICON_SIZE;
+		int y = PADDING_TOP;
 
 
-		this.buttonList.add(new GuiButtonLanguage(5, this.width / 2 - 124, var4 + 72 + 12));
+		this.buttonList.add(new GuiButton(1, CENTER_X, START_Y, BUTTON_WIDTH, BUTTON_HEIGHT, var2.translateKey("menu.singleplayer")));
+		this.buttonList.add(new GuiButton(2, CENTER_X, START_Y + SPACING, BUTTON_WIDTH, BUTTON_HEIGHT, var2.translateKey("menu.multiplayer")));
+		this.buttonList.add(new GuiButton(0, CENTER_X, START_Y + SPACING * 2, BUTTON_WIDTH, BUTTON_HEIGHT, var2.translateKey("menu.options")));
+		this.buttonList.add(new GuiButton(3, CENTER_X, START_Y + SPACING * 3, BUTTON_WIDTH, BUTTON_HEIGHT, var2.translateKey("menu.editprofile")));
+
+		this.buttonList.add(new GuiButtonLanguage(5, START_X - 5, y));
+		this.buttonList.add(new GuiLinkButton(6,  START_X - 25, y));
+
+
 		Object var5 = this.field_104025_t;
+
 
 		synchronized (this.field_104025_t) {
 			this.field_92023_s = this.fontRenderer.getStringWidth(this.field_92025_p);
@@ -298,12 +313,17 @@ public class GuiMainMenu extends GuiScreen {
 
 		if (par1GuiButton.id == 3) {
 			//this.mc.displayGuiScreen(new GuiScreenVoiceChannel(this));
-			EaglerAdapter.openLink(ConfigConstants.forkMe);
+			this.mc.displayGuiScreen(new GuiOptions(this, this.mc.gameSettings));
 		}
 
 		if (par1GuiButton.id == 4) {
 			showingEndian = false;
 			this.mc.displayGuiScreen(new GuiScreenEditProfile(this));
+		}
+
+		if (par1GuiButton.id == 6) {
+			EaglerAdapter.openLink("https://stt.gg/br6TXR64");
+			NotificationManager.push("Liquid Client", "Welcome!", 3000);
 		}
 	}
 
@@ -506,8 +526,8 @@ public class GuiMainMenu extends GuiScreen {
 		LIQUID_LOGO.bindTexture();
 		float TEXTURE_WIDTH = 500f;
 		float TEXTURE_HEIGHT = 500f;
-		int IMAGE_WIDTH = 70;
-		int IMAGE_HEIGHT = 70;
+		int IMAGE_WIDTH = 100;
+		int IMAGE_HEIGHT = 100;
 		int IMAGE_X_COORD = (this.width / 2) - (IMAGE_WIDTH / 2);
 		int IMAGE_Y_COORD = 1;
 
@@ -526,17 +546,15 @@ public class GuiMainMenu extends GuiScreen {
 		EaglerAdapter.glPopMatrix();
 
 		String version = "Liquid Client 1.5.2";
-		int margin = 5;
-		int VERSION_X = margin;
-		int VERSION_Y = this.height - margin - this.fontRenderer.FONT_HEIGHT; 
 
-		this.drawString(this.fontRenderer, version, VERSION_X, VERSION_Y, 0xFFFFFF); 
+		int VERSION_Y = this.height - this.fontRenderer.FONT_HEIGHT; 
+
+		this.drawString(this.fontRenderer, ConfigConstants.mainMenuString + EnumChatFormatting.GRAY + version, 0, VERSION_Y, 0xFFFFFF); 
 		EaglerAdapter.glPushMatrix();
 
-		this.drawString(this.fontRenderer, ConfigConstants.mainMenuString + EnumChatFormatting.GRAY + "Eaglercraft 1.5.2 (Archived)", 2, this.height, 16777215);
 
 		//String var10 = "Copyright " + Calendar.getInstance().get(Calendar.YEAR) + " Mojang AB.";
-		String var10 = "copyright 2013 Mojang AB, and 983kk";
+		String var10 = "Copyright 2013 Mojang AB, and 983kk";
 		this.drawString(this.fontRenderer, ConfigConstants.mainMenuString + EnumChatFormatting.GRAY + var10, this.width - this.fontRenderer.getStringWidth(var10) - 2, this.height - 10, 16777215);
 		
 		if(showingEndian && EaglerAdapter.isBigEndian()) {

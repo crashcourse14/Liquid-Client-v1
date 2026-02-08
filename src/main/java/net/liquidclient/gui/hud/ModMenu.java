@@ -1,18 +1,26 @@
 package net.liquidclient.gui.hud;
 
-import net.minecraft.src.GuiButton;
-import net.minecraft.src.GuiIngame;
-import net.minecraft.src.GuiScreen;
+import net.minecraft.src.*;
 import net.liquidclient.Client;
 import net.liquidclient.gui.mod.mods.*;
 import net.liquidclient.gui.mod.HudManager;
-import net.minecraft.src.GuiIngame;
 import net.minecraft.client.Minecraft;
+import net.liquidclient.gui.hud.buttons.*;
+import net.lax1dude.eaglercraft.TextureLocation;
+import net.lax1dude.eaglercraft.adapter.Tessellator;
+import net.lax1dude.eaglercraft.EaglerAdapter;
+
 
 public class ModMenu extends GuiScreen {
 
     private int PANEL_X, PANEL_Y, PANEL_WIDTH, PANEL_HEIGHT;
+	private static final TextureLocation LIQUID_LOGO_LONG = new TextureLocation("/gui/LiquidClient/logo.png");
 
+
+    public boolean doesGuiPauseGame() {
+		return false;
+	}
+    
     @Override
     public void initGui() {
         buttonList.clear();
@@ -51,9 +59,33 @@ public class ModMenu extends GuiScreen {
         buttonList.add(new GuiButton(9, x + BUTTON_WIDTH + gap, y + (BUTTON_HEIGHT + gap) * 2, BUTTON_WIDTH, BUTTON_HEIGHT, "Server IP: " + Client.INSTANCE.hudManager.serverIPMod.isEnabled()));
         buttonList.add(new GuiButton(10, x + BUTTON_WIDTH + gap, y + (BUTTON_HEIGHT + gap) * 3, BUTTON_WIDTH, BUTTON_HEIGHT, "Date: " + Client.INSTANCE.hudManager.dateMod.isEnabled()));
 
-        // Close button
-        buttonList.add(new GuiButton(100, PANEL_X + PANEL_WIDTH - 22, PANEL_Y + 10, 12, 12, "X"));
+        buttonList.add(new GuiCloseButton(100, PANEL_X + PANEL_WIDTH - 24, PANEL_Y + 10));
+
+
+        int IMAGE_WIDTH = 130;  
+        int IMAGE_HEIGHT = 50;   
+        int IMAGE_X_COORD = 0;
+        int IMAGE_Y_COORD = 0;
+
+        EaglerAdapter.glPushMatrix();
+		EaglerAdapter.glTranslatef(IMAGE_X_COORD, IMAGE_Y_COORD, 0.0f);
+		EaglerAdapter.glScalef(1.0f, 1.0f, 1.0f);
+
+		Tessellator tess = Tessellator.instance;
+		tess.startDrawingQuads();
+		tess.addVertexWithUV(0, IMAGE_HEIGHT, 0, 0.0, 1.0); 
+		tess.addVertexWithUV(IMAGE_WIDTH, IMAGE_HEIGHT, 0, 1.0, 1.0); 
+		tess.addVertexWithUV(IMAGE_WIDTH, 0, 0, 1.0, 0.0); 
+		tess.addVertexWithUV(0, 0, 0, 0.0, 0.0);  
+		tess.draw();
+
+		EaglerAdapter.glPopMatrix();
+
+
+
     }
+
+
 
     @Override
     public void drawScreen(int mouseX, int mouseY, float partialTicks) {
@@ -65,7 +97,11 @@ public class ModMenu extends GuiScreen {
         // Header bar
         drawRect(PANEL_X, PANEL_Y, PANEL_X + PANEL_WIDTH, PANEL_Y + 30, 0xFF1A1A1A);
 
+
+
         drawCenteredString(fontRenderer, "MOD MENU", width / 2, PANEL_Y + 10, 0xFFFFFF);
+
+        LIQUID_LOGO_LONG.bindTexture();
 
         super.drawScreen(mouseX, mouseY, partialTicks);
     }
@@ -125,4 +161,5 @@ public class ModMenu extends GuiScreen {
                 break;
         }
     }
+
 }

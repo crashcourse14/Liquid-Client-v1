@@ -10,7 +10,7 @@ public class GameSettings {
 	private static final String[] DIFFICULTIES = new String[] { "options.difficulty.peaceful", "options.difficulty.easy", "options.difficulty.normal", "options.difficulty.hard" };
 
 	/** GUI scale values */
-	private static final String[] GUISCALES = new String[] { "options.guiScale.auto", "options.guiScale.small", "options.guiScale.normal", "options.guiScale.large" };
+	private static final String[] GUISCALES = new String[] { "options.guiScale.normal", "options.guiScale.auto", "options.guiScale.normal", "options.guiScale.large" };
 	private static final String[] CHAT_VISIBILITIES = new String[] { "options.chat.visibility.full", "options.chat.visibility.system", "options.chat.visibility.hidden" };
 	private static final String[] PARTICLES = new String[] { "options.particles.all", "options.particles.decreased", "options.particles.minimal" };
 

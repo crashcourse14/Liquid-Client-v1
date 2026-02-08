@@ -7,6 +7,7 @@ import java.util.List;
 import net.liquidclient.Client;
 import net.liquidclient.gui.mod.HudManager;
 import net.liquidclient.gui.mod.HudMod;
+import net.liquidclient.gui.hud.notifications.*;
 
 import net.lax1dude.eaglercraft.EaglerAdapter;
 import net.lax1dude.eaglercraft.EaglercraftRandom;
@@ -633,6 +634,35 @@ public class GuiIngame extends Gui {
 		EaglerAdapter.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 		EaglerAdapter.glDisable(EaglerAdapter.GL_LIGHTING);
 		EaglerAdapter.glEnable(EaglerAdapter.GL_ALPHA_TEST);
+
+		Minecraft mc = Minecraft.getMinecraft();
+		if (mc == null || mc.fontRenderer == null) return;
+
+		ScaledResolution sr = new ScaledResolution(
+			mc.gameSettings,
+			mc.displayWidth,
+			mc.displayHeight
+		);
+
+		// Make sure we're in 2D
+		EaglerAdapter.glDisable(EaglerAdapter.GL_DEPTH_TEST);
+		EaglerAdapter.glEnable(EaglerAdapter.GL_BLEND);
+		EaglerAdapter.glBlendFunc(
+			EaglerAdapter.GL_SRC_ALPHA,
+			EaglerAdapter.GL_ONE_MINUS_SRC_ALPHA
+		);
+
+		// DEBUG TEXT (guaranteed visible)
+		mc.fontRenderer.drawString(
+			"NOTIFICATION RENDER TEST",
+			5,
+			5,
+			0xFFFFFF
+		);
+
+		// Restore state
+		EaglerAdapter.glDisable(EaglerAdapter.GL_BLEND);
+		EaglerAdapter.glEnable(EaglerAdapter.GL_DEPTH_TEST);
 	}
 	
 	private static String doubleToShorterString(double d) {

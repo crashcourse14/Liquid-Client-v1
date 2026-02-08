@@ -8,6 +8,7 @@ import java.util.List;
 import net.liquidclient.Client;
 import net.liquidclient.event.events.ClientTick;
 import net.liquidclient.gui.hud.PostModMenu;
+import net.liquidclient.gui.hud.notifications.*;
 
 import net.lax1dude.eaglercraft.DefaultSkinRenderer;
 import net.lax1dude.eaglercraft.EaglerAdapter;
@@ -95,6 +96,8 @@ import net.lax1dude.eaglercraft.TextureLocation;
 public class Minecraft implements Runnable {
 
 	private static final TextureLocation LIQUID_LOGO = new TextureLocation("/gui/LiquidClient/logo.png");
+	private static final TextureLocation BACKGROUND_IMAGE = new TextureLocation("/gui/LiquidClient/background_panorama.png");
+
 	
 	private ServerData currentServerData;
 
@@ -405,6 +408,21 @@ public class Minecraft implements Runnable {
 			EaglerAdapter.glClearColor(0.0F, 0.0F, 0.0F, 1.0F);
 			EaglerAdapter.glClear(EaglerAdapter.GL_COLOR_BUFFER_BIT | EaglerAdapter.GL_DEPTH_BUFFER_BIT);
 
+			BACKGROUND_IMAGE.bindTexture();
+
+			EaglerAdapter.glPushMatrix();
+			EaglerAdapter.glTranslatef(0, 0, 0);
+			EaglerAdapter.glScalef(1.0f, 1.0f, 1.0f);
+
+			Tessellator tess = Tessellator.instance;
+			tess.startDrawingQuads();
+			tess.addVertexWithUV(0, sr.getScaledHeight(), 0, 0.0, 1.0);         
+			tess.addVertexWithUV(sr.getScaledWidth(), sr.getScaledHeight(), 0, 1.0, 1.0); 
+			tess.addVertexWithUV(sr.getScaledWidth(), 0, 0, 1.0, 0.0);                
+			tess.addVertexWithUV(0, 0, 0, 0.0, 0.0);                                 
+			tess.draw();
+			EaglerAdapter.glPopMatrix();
+
 			LIQUID_LOGO.bindTexture();
 
 			int logoWidth = 100; 
@@ -416,7 +434,6 @@ public class Minecraft implements Runnable {
 			EaglerAdapter.glTranslatef(logoX, logoY, 0.0f);
 			EaglerAdapter.glScalef(1.0f, 1.0f, 1.0f);
 
-			Tessellator tess = Tessellator.instance;
 			tess.startDrawingQuads();
 			tess.addVertexWithUV(0, logoHeight, 0, 0.0, 1.0);      
 			tess.addVertexWithUV(logoWidth, logoHeight, 0, 1.0, 1.0);  
@@ -425,23 +442,66 @@ public class Minecraft implements Runnable {
 			tess.draw();
 			EaglerAdapter.glPopMatrix();
 
-			String text = "Starting Liquid Client...";
-			String DEV_Text = "Client developed by 983kk (Mainstream Studios)";
-
+			String text = "Decompiling Assets " + (i * 100 / 200) + "%";
 			int TEXT_WIDTH = this.fontRenderer.getStringWidth(text);
 			int TEXT_X = (sr.getScaledWidth() - TEXT_WIDTH) / 2;
 			int TEXT_Y = logoY + logoHeight + 10; 
+			this.fontRenderer.drawString(text, TEXT_X, TEXT_Y, 0xFFFFFF);
 
-			this.fontRenderer.drawString(text, TEXT_X, TEXT_Y, 0xFFFFFF); 
+			int PROGRESS_BAR_WIDTH = 100;
+			int PROGRESS_BAR_HEIGHT = 5;
+			int PROGRESS_BAR_AMOUNT = 33; 
 
-			int DEV_X = 5; 
-			int DEV_Y = sr.getScaledHeight() - 5 - this.fontRenderer.FONT_HEIGHT; 
+			int barX = (sr.getScaledWidth() - PROGRESS_BAR_WIDTH) / 2;
+			int barY = TEXT_Y + this.fontRenderer.FONT_HEIGHT + 10; 
+			int BORDER = 1; 
+			int RADIUS = 5;
 
-			this.fontRenderer.drawString(DEV_Text, DEV_X, DEV_Y, 0xFFFFFF);
+			EaglerAdapter.glDisable(EaglerAdapter.GL_TEXTURE_2D);
+
+			EaglerAdapter.glColor4f(0.78f, 0.78f, 0.78f, 0.5f);
+			tess.startDrawingQuads();
+			tess.addVertex(barX, barY + PROGRESS_BAR_HEIGHT, 0);
+			tess.addVertex(barX + PROGRESS_BAR_WIDTH, barY + PROGRESS_BAR_HEIGHT, 0);
+			tess.addVertex(barX + PROGRESS_BAR_WIDTH, barY, 0);
+			tess.addVertex(barX, barY, 0);
+			tess.draw();
+
+			EaglerAdapter.glColor4f(1f, 1f, 1f, 0.5f);
+			tess.startDrawingQuads();
+			tess.addVertex(barX, barY + PROGRESS_BAR_HEIGHT, 0);
+			tess.addVertex(barX + PROGRESS_BAR_WIDTH, barY + PROGRESS_BAR_HEIGHT, 0);
+			tess.addVertex(barX + PROGRESS_BAR_WIDTH, barY + PROGRESS_BAR_HEIGHT - BORDER, 0);
+			tess.addVertex(barX, barY + PROGRESS_BAR_HEIGHT - BORDER, 0);
+			tess.addVertex(barX, barY + BORDER, 0);
+			tess.addVertex(barX + PROGRESS_BAR_WIDTH, barY + BORDER, 0);
+			tess.addVertex(barX + PROGRESS_BAR_WIDTH, barY, 0);
+			tess.addVertex(barX, barY, 0);
+			tess.addVertex(barX, barY + PROGRESS_BAR_HEIGHT, 0);
+			tess.addVertex(barX + BORDER, barY + PROGRESS_BAR_HEIGHT, 0);
+			tess.addVertex(barX + BORDER, barY, 0);
+			tess.addVertex(barX, barY, 0);
+			tess.addVertex(barX + PROGRESS_BAR_WIDTH - BORDER, barY + PROGRESS_BAR_HEIGHT, 0);
+			tess.addVertex(barX + PROGRESS_BAR_WIDTH, barY + PROGRESS_BAR_HEIGHT, 0);
+			tess.addVertex(barX + PROGRESS_BAR_WIDTH, barY, 0);
+			tess.addVertex(barX + PROGRESS_BAR_WIDTH - BORDER, barY, 0);
+			tess.draw();
+
+
+			int filledWidth = PROGRESS_BAR_WIDTH * PROGRESS_BAR_AMOUNT / 100;
+			EaglerAdapter.glColor4f(1f, 1f, 1f, 0.4f);
+			tess.startDrawingQuads();
+			tess.addVertex(barX + BORDER, barY + PROGRESS_BAR_HEIGHT - BORDER, 0);
+			tess.addVertex(barX + BORDER + filledWidth - BORDER, barY + PROGRESS_BAR_HEIGHT - BORDER, 0);
+			tess.addVertex(barX + BORDER + filledWidth - BORDER, barY + BORDER, 0);
+			tess.addVertex(barX + BORDER, barY + BORDER, 0);
+			tess.draw();
+
+
+			EaglerAdapter.glEnable(EaglerAdapter.GL_TEXTURE_2D);
 
 			EaglerAdapter.glFlush();
 			EaglerAdapter.updateDisplay();
-
 			
 			long t = t1 + 17 + 17*i - System.currentTimeMillis();
 			if(t > 0) {
@@ -468,6 +528,21 @@ public class Minecraft implements Runnable {
 			EaglerAdapter.glClearColor(0.0F, 0.0F, 0.0F, 1.0F);
 			EaglerAdapter.glClear(EaglerAdapter.GL_COLOR_BUFFER_BIT | EaglerAdapter.GL_DEPTH_BUFFER_BIT);
 
+			BACKGROUND_IMAGE.bindTexture();
+
+			EaglerAdapter.glPushMatrix();
+			EaglerAdapter.glTranslatef(0, 0, 0);
+			EaglerAdapter.glScalef(1.0f, 1.0f, 1.0f);
+
+			Tessellator tess = Tessellator.instance;
+			tess.startDrawingQuads();
+			tess.addVertexWithUV(0, sr.getScaledHeight(), 0, 0.0, 1.0);         
+			tess.addVertexWithUV(sr.getScaledWidth(), sr.getScaledHeight(), 0, 1.0, 1.0); 
+			tess.addVertexWithUV(sr.getScaledWidth(), 0, 0, 1.0, 0.0);                
+			tess.addVertexWithUV(0, 0, 0, 0.0, 0.0);                                 
+			tess.draw();
+			EaglerAdapter.glPopMatrix();
+
 			LIQUID_LOGO.bindTexture();
 
 			int logoWidth = 100; 
@@ -479,7 +554,6 @@ public class Minecraft implements Runnable {
 			EaglerAdapter.glTranslatef(logoX, logoY, 0.0f);
 			EaglerAdapter.glScalef(1.0f, 1.0f, 1.0f);
 
-			Tessellator tess = Tessellator.instance;
 			tess.startDrawingQuads();
 			tess.addVertexWithUV(0, logoHeight, 0, 0.0, 1.0);      
 			tess.addVertexWithUV(logoWidth, logoHeight, 0, 1.0, 1.0);  
@@ -489,21 +563,66 @@ public class Minecraft implements Runnable {
 			EaglerAdapter.glPopMatrix();
 
 			String text = "Starting Liquid Client...";
-			String DEV_Text = "Client developed by 983kk (Mainstream Studios)";
-
 			int TEXT_WIDTH = this.fontRenderer.getStringWidth(text);
 			int TEXT_X = (sr.getScaledWidth() - TEXT_WIDTH) / 2;
 			int TEXT_Y = logoY + logoHeight + 10; 
+			this.fontRenderer.drawString(text, TEXT_X, TEXT_Y, 0xFFFFFF);
 
-			this.fontRenderer.drawString(text, TEXT_X, TEXT_Y, 0xFFFFFF); 
-;
-			int DEV_X = 5; 
-			int DEV_Y = sr.getScaledHeight() - 5 - this.fontRenderer.FONT_HEIGHT; 
+			int PROGRESS_BAR_WIDTH = 100;
+			int PROGRESS_BAR_HEIGHT = 5;
+			int PROGRESS_BAR_AMOUNT = 66; 
 
-			this.fontRenderer.drawString(DEV_Text, DEV_X, DEV_Y, 0xFFFFFF);
+			int barX = (sr.getScaledWidth() - PROGRESS_BAR_WIDTH) / 2;
+			int barY = TEXT_Y + this.fontRenderer.FONT_HEIGHT + 10; 
+			int BORDER = 1; 
+			int RADIUS = 5;
+
+			EaglerAdapter.glDisable(EaglerAdapter.GL_TEXTURE_2D);
+
+			EaglerAdapter.glColor4f(0.78f, 0.78f, 0.78f, 0.5f);
+			tess.startDrawingQuads();
+			tess.addVertex(barX, barY + PROGRESS_BAR_HEIGHT, 0);
+			tess.addVertex(barX + PROGRESS_BAR_WIDTH, barY + PROGRESS_BAR_HEIGHT, 0);
+			tess.addVertex(barX + PROGRESS_BAR_WIDTH, barY, 0);
+			tess.addVertex(barX, barY, 0);
+			tess.draw();
+
+			EaglerAdapter.glColor4f(1f, 1f, 1f, 0.5f);
+			tess.startDrawingQuads();
+			tess.addVertex(barX, barY + PROGRESS_BAR_HEIGHT, 0);
+			tess.addVertex(barX + PROGRESS_BAR_WIDTH, barY + PROGRESS_BAR_HEIGHT, 0);
+			tess.addVertex(barX + PROGRESS_BAR_WIDTH, barY + PROGRESS_BAR_HEIGHT - BORDER, 0);
+			tess.addVertex(barX, barY + PROGRESS_BAR_HEIGHT - BORDER, 0);
+			tess.addVertex(barX, barY + BORDER, 0);
+			tess.addVertex(barX + PROGRESS_BAR_WIDTH, barY + BORDER, 0);
+			tess.addVertex(barX + PROGRESS_BAR_WIDTH, barY, 0);
+			tess.addVertex(barX, barY, 0);
+			tess.addVertex(barX, barY + PROGRESS_BAR_HEIGHT, 0);
+			tess.addVertex(barX + BORDER, barY + PROGRESS_BAR_HEIGHT, 0);
+			tess.addVertex(barX + BORDER, barY, 0);
+			tess.addVertex(barX, barY, 0);
+			tess.addVertex(barX + PROGRESS_BAR_WIDTH - BORDER, barY + PROGRESS_BAR_HEIGHT, 0);
+			tess.addVertex(barX + PROGRESS_BAR_WIDTH, barY + PROGRESS_BAR_HEIGHT, 0);
+			tess.addVertex(barX + PROGRESS_BAR_WIDTH, barY, 0);
+			tess.addVertex(barX + PROGRESS_BAR_WIDTH - BORDER, barY, 0);
+			tess.draw();
+
+
+			int filledWidth = PROGRESS_BAR_WIDTH * PROGRESS_BAR_AMOUNT / 100;
+			EaglerAdapter.glColor4f(1f, 1f, 1f, 0.4f);
+			tess.startDrawingQuads();
+			tess.addVertex(barX + BORDER, barY + PROGRESS_BAR_HEIGHT - BORDER, 0);
+			tess.addVertex(barX + BORDER + filledWidth - BORDER, barY + PROGRESS_BAR_HEIGHT - BORDER, 0);
+			tess.addVertex(barX + BORDER + filledWidth - BORDER, barY + BORDER, 0);
+			tess.addVertex(barX + BORDER, barY + BORDER, 0);
+			tess.draw();
+
+
+			EaglerAdapter.glEnable(EaglerAdapter.GL_TEXTURE_2D);
 
 			EaglerAdapter.glFlush();
 			EaglerAdapter.updateDisplay();
+
 			
 			long t = t1 + 17 + 17*i - System.currentTimeMillis();
 			if(t > 0) {
@@ -536,6 +655,21 @@ public class Minecraft implements Runnable {
 			EaglerAdapter.glClearColor(0.0F, 0.0F, 0.0F, 1.0F);
 			EaglerAdapter.glClear(EaglerAdapter.GL_COLOR_BUFFER_BIT | EaglerAdapter.GL_DEPTH_BUFFER_BIT);
 
+			BACKGROUND_IMAGE.bindTexture();
+
+			EaglerAdapter.glPushMatrix();
+			EaglerAdapter.glTranslatef(0, 0, 0);
+			EaglerAdapter.glScalef(1.0f, 1.0f, 1.0f);
+
+			Tessellator tess = Tessellator.instance;
+			tess.startDrawingQuads();
+			tess.addVertexWithUV(0, sr.getScaledHeight(), 0, 0.0, 1.0);         
+			tess.addVertexWithUV(sr.getScaledWidth(), sr.getScaledHeight(), 0, 1.0, 1.0); 
+			tess.addVertexWithUV(sr.getScaledWidth(), 0, 0, 1.0, 0.0);                
+			tess.addVertexWithUV(0, 0, 0, 0.0, 0.0);                                 
+			tess.draw();
+			EaglerAdapter.glPopMatrix();
+
 			LIQUID_LOGO.bindTexture();
 
 			int logoWidth = 100; 
@@ -547,7 +681,6 @@ public class Minecraft implements Runnable {
 			EaglerAdapter.glTranslatef(logoX, logoY, 0.0f);
 			EaglerAdapter.glScalef(1.0f, 1.0f, 1.0f);
 
-			Tessellator tess = Tessellator.instance;
 			tess.startDrawingQuads();
 			tess.addVertexWithUV(0, logoHeight, 0, 0.0, 1.0);      
 			tess.addVertexWithUV(logoWidth, logoHeight, 0, 1.0, 1.0);  
@@ -556,19 +689,63 @@ public class Minecraft implements Runnable {
 			tess.draw();
 			EaglerAdapter.glPopMatrix();
 
-			String text = "Starting Liquid Client...";
-			String DEV_Text = "Client developed by 983kk (Mainstream Studios)";
-
+			String text = "Finishing...";
 			int TEXT_WIDTH = this.fontRenderer.getStringWidth(text);
 			int TEXT_X = (sr.getScaledWidth() - TEXT_WIDTH) / 2;
 			int TEXT_Y = logoY + logoHeight + 10; 
+			this.fontRenderer.drawString(text, TEXT_X, TEXT_Y, 0xFFFFFF);
 
-			this.fontRenderer.drawString(text, TEXT_X, TEXT_Y, 0xFFFFFF); 
+			int PROGRESS_BAR_WIDTH = 100;
+			int PROGRESS_BAR_HEIGHT = 5;
+			int PROGRESS_BAR_AMOUNT = 100; 
 
-			int DEV_X = 5; 
-			int DEV_Y = sr.getScaledHeight() - 5 - this.fontRenderer.FONT_HEIGHT; 
+			int barX = (sr.getScaledWidth() - PROGRESS_BAR_WIDTH) / 2;
+			int barY = TEXT_Y + this.fontRenderer.FONT_HEIGHT + 10; 
+			int BORDER = 1; 
+			int RADIUS = 5;
 
-			this.fontRenderer.drawString(DEV_Text, DEV_X, DEV_Y, 0xFFFFFF);
+			EaglerAdapter.glDisable(EaglerAdapter.GL_TEXTURE_2D);
+
+			EaglerAdapter.glColor4f(0.78f, 0.78f, 0.78f, 0.5f);
+			tess.startDrawingQuads();
+			tess.addVertex(barX, barY + PROGRESS_BAR_HEIGHT, 0);
+			tess.addVertex(barX + PROGRESS_BAR_WIDTH, barY + PROGRESS_BAR_HEIGHT, 0);
+			tess.addVertex(barX + PROGRESS_BAR_WIDTH, barY, 0);
+			tess.addVertex(barX, barY, 0);
+			tess.draw();
+
+			EaglerAdapter.glColor4f(1f, 1f, 1f, 0.5f);
+			tess.startDrawingQuads();
+			tess.addVertex(barX, barY + PROGRESS_BAR_HEIGHT, 0);
+			tess.addVertex(barX + PROGRESS_BAR_WIDTH, barY + PROGRESS_BAR_HEIGHT, 0);
+			tess.addVertex(barX + PROGRESS_BAR_WIDTH, barY + PROGRESS_BAR_HEIGHT - BORDER, 0);
+			tess.addVertex(barX, barY + PROGRESS_BAR_HEIGHT - BORDER, 0);
+			tess.addVertex(barX, barY + BORDER, 0);
+			tess.addVertex(barX + PROGRESS_BAR_WIDTH, barY + BORDER, 0);
+			tess.addVertex(barX + PROGRESS_BAR_WIDTH, barY, 0);
+			tess.addVertex(barX, barY, 0);
+			tess.addVertex(barX, barY + PROGRESS_BAR_HEIGHT, 0);
+			tess.addVertex(barX + BORDER, barY + PROGRESS_BAR_HEIGHT, 0);
+			tess.addVertex(barX + BORDER, barY, 0);
+			tess.addVertex(barX, barY, 0);
+			tess.addVertex(barX + PROGRESS_BAR_WIDTH - BORDER, barY + PROGRESS_BAR_HEIGHT, 0);
+			tess.addVertex(barX + PROGRESS_BAR_WIDTH, barY + PROGRESS_BAR_HEIGHT, 0);
+			tess.addVertex(barX + PROGRESS_BAR_WIDTH, barY, 0);
+			tess.addVertex(barX + PROGRESS_BAR_WIDTH - BORDER, barY, 0);
+			tess.draw();
+
+
+			int filledWidth = PROGRESS_BAR_WIDTH * PROGRESS_BAR_AMOUNT / 100;
+			EaglerAdapter.glColor4f(1f, 1f, 1f, 0.4f);
+			tess.startDrawingQuads();
+			tess.addVertex(barX + BORDER, barY + PROGRESS_BAR_HEIGHT - BORDER, 0);
+			tess.addVertex(barX + BORDER + filledWidth - BORDER, barY + PROGRESS_BAR_HEIGHT - BORDER, 0);
+			tess.addVertex(barX + BORDER + filledWidth - BORDER, barY + BORDER, 0);
+			tess.addVertex(barX + BORDER, barY + BORDER, 0);
+			tess.draw();
+
+
+			EaglerAdapter.glEnable(EaglerAdapter.GL_TEXTURE_2D);
 
 			EaglerAdapter.glFlush();
 			EaglerAdapter.updateDisplay();
@@ -1230,6 +1407,8 @@ public class Minecraft implements Runnable {
 
 		this.mcProfiler.startSection("stats");
 		this.mcProfiler.endStartSection("gui");
+
+
 		
 		this.isGamePaused = this.isSingleplayer() && this.theWorld != null && this.thePlayer != null && this.currentScreen != null
 				&& this.currentScreen.doesGuiPauseGame() && !IntegratedServerLAN.isHostingLAN();
@@ -1265,6 +1444,7 @@ public class Minecraft implements Runnable {
 		}
 		
 		DefaultSkinRenderer.deleteOldSkins();
+
 
 		if (this.currentScreen == null && this.thePlayer != null) {
 			if (this.thePlayer.getHealth() <= 0) {
@@ -1647,6 +1827,14 @@ public class Minecraft implements Runnable {
 
 		this.mcProfiler.endSection();
 		this.systemTime = getSystemTime();
+
+		ScaledResolution sr = new ScaledResolution(
+			this.gameSettings,
+			this.displayWidth,
+			this.displayHeight
+		);
+
+		NotificationRenderer.render(sr);
 	}
 	
 	private int titleMusicObj = -1;
