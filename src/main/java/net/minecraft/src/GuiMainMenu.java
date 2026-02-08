@@ -166,7 +166,7 @@ public class GuiMainMenu extends GuiScreen {
 		this.buttonList.add(new GuiButton(1, CENTER_X, START_Y, BUTTON_WIDTH, BUTTON_HEIGHT, var2.translateKey("menu.singleplayer")));
 		this.buttonList.add(new GuiButton(2, CENTER_X, START_Y + SPACING, BUTTON_WIDTH, BUTTON_HEIGHT, var2.translateKey("menu.multiplayer")));
 		this.buttonList.add(new GuiButton(0, CENTER_X, START_Y + SPACING * 2, BUTTON_WIDTH, BUTTON_HEIGHT, var2.translateKey("menu.options")));
-		this.buttonList.add(new GuiButton(3, CENTER_X, START_Y + SPACING * 3, BUTTON_WIDTH, BUTTON_HEIGHT, var2.translateKey("menu.editprofile")));
+		this.buttonList.add(new GuiButton(4, CENTER_X, START_Y + SPACING * 3, BUTTON_WIDTH, BUTTON_HEIGHT, var2.translateKey("menu.editprofile")));
 
 		this.buttonList.add(new GuiButtonLanguage(5, START_X - 5, y));
 		this.buttonList.add(new GuiLinkButton(6,  START_X - 25, y));

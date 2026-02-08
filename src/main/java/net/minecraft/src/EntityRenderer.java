@@ -12,6 +12,7 @@ import net.lax1dude.eaglercraft.glemu.EffectPipeline;
 import net.lax1dude.eaglercraft.glemu.EffectPipelineFXAA;
 import net.lax1dude.eaglercraft.glemu.vector.Matrix4f;
 import net.minecraft.client.Minecraft;
+import net.liquidclient.gui.hud.notifications.*;
 
 public class EntityRenderer {
 	public static boolean anaglyphEnable = false;
@@ -927,6 +928,15 @@ public class EntityRenderer {
 
 				this.renderEndNanoTime = System.nanoTime();
 				this.mc.mcProfiler.endStartSection("gui");
+
+				ScaledResolution sr = new ScaledResolution(
+					this.mc.gameSettings,
+					this.mc.displayWidth,
+					this.mc.displayHeight
+				);
+				NotificationRenderer.render(sr);
+
+				
 
 				if (!this.mc.gameSettings.hideGUI || this.mc.currentScreen != null) {
 					this.mc.ingameGUI.renderGameOverlay(par1, this.mc.currentScreen != null, var16, var17);

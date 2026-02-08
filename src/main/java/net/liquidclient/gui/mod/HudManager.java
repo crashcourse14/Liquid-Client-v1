@@ -21,6 +21,7 @@ public class HudManager {
     public TriangleMod triangleMod;
     public VertexesMod vertexesMod;
     public ServerIPMod serverIPMod;
+    //public EntityHealthMod entityHealthMod;
 
     public HudManager() {
         hudMods.add(clientName = new ClientName());
@@ -35,7 +36,8 @@ public class HudManager {
         hudMods.add(triangleMod = new TriangleMod());
         hudMods.add(vertexesMod = new VertexesMod());
         hudMods.add(serverIPMod = new ServerIPMod());
-
+        //hudMods.add(entityHealthMod = new EntityHealthMod());
+        
     }
 
     public void renderMods() {

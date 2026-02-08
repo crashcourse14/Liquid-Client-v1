@@ -1,0 +1,2 @@
+WANDERWOOD = wss://wanderwood.thatonebot.site
+MESSCRAFT = wss://messcraft.ovh

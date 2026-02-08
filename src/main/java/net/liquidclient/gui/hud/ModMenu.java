@@ -58,6 +58,7 @@ public class ModMenu extends GuiScreen {
         buttonList.add(new GuiButton(8, x + BUTTON_WIDTH + gap, y + (BUTTON_HEIGHT + gap), BUTTON_WIDTH, BUTTON_HEIGHT, "Triangles: " + Client.INSTANCE.hudManager.triangleMod.isEnabled()));
         buttonList.add(new GuiButton(9, x + BUTTON_WIDTH + gap, y + (BUTTON_HEIGHT + gap) * 2, BUTTON_WIDTH, BUTTON_HEIGHT, "Server IP: " + Client.INSTANCE.hudManager.serverIPMod.isEnabled()));
         buttonList.add(new GuiButton(10, x + BUTTON_WIDTH + gap, y + (BUTTON_HEIGHT + gap) * 3, BUTTON_WIDTH, BUTTON_HEIGHT, "Date: " + Client.INSTANCE.hudManager.dateMod.isEnabled()));
+        //buttonList.add(new GuiButton(11, x + BUTTON_WIDTH + gap, y + (BUTTON_HEIGHT + gap) * 4, BUTTON_WIDTH, BUTTON_HEIGHT, "Entity Health:" + Client.INSTANCE.hudManager.entityHealthMod.isEnabled()));
 
         buttonList.add(new GuiCloseButton(100, PANEL_X + PANEL_WIDTH - 24, PANEL_Y + 10));
 
@@ -155,6 +156,10 @@ public class ModMenu extends GuiScreen {
                 Client.INSTANCE.hudManager.dateMod.toggle();
                 button.displayString = "Date: " + Client.INSTANCE.hudManager.dateMod.isEnabled();
                 break;
+            /*case 11:
+                Client.INSTANCE.hudManager.entityHealthMod.toggle();
+                button.displayString = "Entity Health Mod: " + Client.INSTANCE.hudManager.entityHealthMod.isEnabled();
+                break;*/
 
             case 100:
                 this.mc.displayGuiScreen((GuiScreen) null);

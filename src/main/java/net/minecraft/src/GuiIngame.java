@@ -652,13 +652,6 @@ public class GuiIngame extends Gui {
 			EaglerAdapter.GL_ONE_MINUS_SRC_ALPHA
 		);
 
-		// DEBUG TEXT (guaranteed visible)
-		mc.fontRenderer.drawString(
-			"NOTIFICATION RENDER TEST",
-			5,
-			5,
-			0xFFFFFF
-		);
 
 		// Restore state
 		EaglerAdapter.glDisable(EaglerAdapter.GL_BLEND);

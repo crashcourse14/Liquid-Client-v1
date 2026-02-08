@@ -1828,13 +1828,6 @@ public class Minecraft implements Runnable {
 		this.mcProfiler.endSection();
 		this.systemTime = getSystemTime();
 
-		ScaledResolution sr = new ScaledResolution(
-			this.gameSettings,
-			this.displayWidth,
-			this.displayHeight
-		);
-
-		NotificationRenderer.render(sr);
 	}
 	
 	private int titleMusicObj = -1;

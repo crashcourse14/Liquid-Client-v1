@@ -90,7 +90,7 @@ public abstract class GuiSlot {
 	}
 
 	public void setShowSelectionBox(boolean par1) {
-		this.showSelectionBox = par1;
+		this.showSelectionBox = false;
 	}
 
 	protected void func_77223_a(boolean par1, int par2) {
@@ -327,7 +327,7 @@ public abstract class GuiSlot {
 					EaglerAdapter.glDisable(EaglerAdapter.GL_TEXTURE_2D);
 					var18.startDrawingQuads();
 					var18.setColorOpaque_I(8421504);
-					var18.addVertexWithUV((double) var14, (double) (var20 + var13 + 2), 0.0D, 0.0D, 1.0D);
+					/*var18.addVertexWithUV((double) var14, (double) (var20 + var13 + 2), 0.0D, 0.0D, 1.0D);
 					var18.addVertexWithUV((double) var15, (double) (var20 + var13 + 2), 0.0D, 1.0D, 1.0D);
 					var18.addVertexWithUV((double) var15, (double) (var20 - 2), 0.0D, 1.0D, 0.0D);
 					var18.addVertexWithUV((double) var14, (double) (var20 - 2), 0.0D, 0.0D, 0.0D);
@@ -335,7 +335,7 @@ public abstract class GuiSlot {
 					var18.addVertexWithUV((double) (var14 + 1), (double) (var20 + var13 + 1), 0.0D, 0.0D, 1.0D);
 					var18.addVertexWithUV((double) (var15 - 1), (double) (var20 + var13 + 1), 0.0D, 1.0D, 1.0D);
 					var18.addVertexWithUV((double) (var15 - 1), (double) (var20 - 1), 0.0D, 1.0D, 0.0D);
-					var18.addVertexWithUV((double) (var14 + 1), (double) (var20 - 1), 0.0D, 0.0D, 0.0D);
+					var18.addVertexWithUV((double) (var14 + 1), (double) (var20 - 1), 0.0D, 0.0D, 0.0D);*/
 					var18.draw();
 					EaglerAdapter.glEnable(EaglerAdapter.GL_TEXTURE_2D);
 				}
